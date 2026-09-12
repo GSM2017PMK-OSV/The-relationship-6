@@ -25,8 +25,6 @@ def check_install():
                 messagebox.showerror("Ошибка", f"Не удалось установить библиотеки:\n{str(e)}")
             sys.exit()
         else:
-            sys.exit()
-
 class SimpleProteinVisualizer:
     def __init__(self):
         # Параметры модели для простоты
@@ -44,41 +42,32 @@ class SimpleProteinVisualizer:
         theta = np.linspace(-30, 60, 50)
         R, Theta = np.meshgrid(r, theta)
         Energy = self.calculate_energy(R, Theta)
-        
         # Настройка графика
         fig = plt.figure(figsize=(10, 7))
         ax = fig.add_subplot(111, projection='3d')
-        
         # Цветовая схема для наглядности
         surf = ax.plot_surface(
             R, Theta, Energy, 
             cmap='viridis',
             edgecolor='none',
             alpha=0.8
-        )
-        
         # Подписи осей
         ax.set_xlabel('Расстояние между атомами (Å)')
         ax.set_ylabel('Угол взаимодействия (°)')
         ax.set_zlabel('Свободная энергия')
         ax.set_title('3D модель белковой динамики\n(Вращайте мышкой)')
-        
         # Цветовая шкала
         fig.colorbar(surf, shrink=0.5, aspect=5, label='Энергия (кДж/моль)')
-        
         # Информация для пользователя
         plt.figtext(0.5, 0.01, 
                    "Закройте это окно, чтобы завершить программу", 
                    ha='center', fontsize=10)
-        
         plt.tight_layout()
         plt.show()
-
 def create_shortcut():
     """Создание ярлыка на рабочем столе (для удобства)"""
     desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
     shortcut_path = os.path.join(desktop, 'Белковая модель.lnk')
-    
     if not os.path.exists(shortcut_path):
         try:
             import winshell
@@ -94,14 +83,11 @@ def create_shortcut():
             shortcut.save()
         except:
             pass
-
 def main():
     # Проверка и установка библиотек
     check_install()
-    
     # Создание ярлыка при первом запуске
     create_shortcut()
-    
     # Показ инструкции
     root = tk.Tk()
     root.withdraw()
@@ -117,10 +103,8 @@ def main():
         "Закройте окно графика для выхода."
     )
     root.destroy()
-    
     # Запуск визуализации
     model = SimpleProteinVisualizer()
     model.show_3d_model()
-
 if __name__ == "__main__":
     main()
